@@ -1,11 +1,23 @@
-let req = ""
-let query = ""
-let results = ""
-let pw = "George11!"  // ***** put your database password here
-let netID = "jes65910"
-let databaseSchema = "jes65910"  // put your netID here so this is your schema
-let allCustomerData = []
+btnSubmit.onclick=function(){
+    let name = inptName.value
+    let street = inptStreet.value
+    let city= inptCity.value
+    let state = inptState.value
+    let zipcode = inptZip.value
+    let query = "INSERT INTO customer (`name`,`street`, `city`, `state`, `zipcode`) VALUES ('" + name + "', '" + street + "', '"+ city +"', '"+ state +"', '"+ zipcode +"')"
+    // look at how the query is rendered
+    //alert(query)
+    
+    req = Ajax("https://ormond.creighton.edu/courses/375/ajax-connection.php", "POST", "host=ormond.creighton.edu&user=" + netID + "&pass=" + pw + "&database=" + databaseSchema + "&query=" + query)
 
+    if (req.status == 200) { //transit worked.
+        if (req.responseText == 500)    // for our server - this means the insert succeeded
+            lblMessage3.textContent = "You have successfully added the customer!"
+        else
+            lblMessage3.textContent = "There was a problem with adding the customer to the database."
+    } else // transit error
+        lblMessage3.textContent = "Error: " + req.status
+}
 
 customerSelect.onshow=function(){
   query = "SELECT * FROM customer"
@@ -20,7 +32,7 @@ customerSelect.onshow=function(){
            console.log(`The parsed JSON string is converted to a JS object (an array of arrays): ${results} where results[0] is ${results[0]}, the first array in the JS results object.`)
         
         if (results.length == 0)    // no results were returned by the query
-           lblMessage1.textContent = "There are no pets in the database."
+           lblCustomerDisplay.textContent = "There are no pets in the database."
         else {        // query results were returned
             // this is what the results look like: 
             //   [                                                        ]
@@ -37,9 +49,9 @@ customerSelect.onshow=function(){
       */
         for (i = 0; i < results.length; i++)
           message = message + results[i][1] + "\n"
-        txtaResults.value = message
+        lblCustomerDisplay.value = message
      } // end else
 
   } else   // the transit didn't work - bad wifi? server turned off?
-        lblMessage1.textContent = "Error code: " + req.status
+        lblCustomerDisplay.textContent = "Error code: " + req.status
 }
