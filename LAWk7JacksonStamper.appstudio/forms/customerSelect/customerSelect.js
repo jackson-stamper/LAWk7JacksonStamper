@@ -6,7 +6,9 @@ let netID = "jes65910"
 let databaseSchema = "jes65910"  // put your netID here so this is your schema
 let allCustomerData = []
 
-query = "SELECT * FROM customer"
+
+customerSelect.onshow=function(){
+  query = "SELECT * FROM customer"
     // Below change from my netID to yours (twice: user and database)    
     req = Ajax("https://ormond.creighton.edu/courses/375/ajax-connection.php", "POST", "host=ormond.creighton.edu&user=jes65910&pass=" + pw + "&database=" + databaseSchema + "&query=" + query)
 
@@ -40,3 +42,4 @@ query = "SELECT * FROM customer"
 
   } else   // the transit didn't work - bad wifi? server turned off?
         lblMessage1.textContent = "Error code: " + req.status
+}
